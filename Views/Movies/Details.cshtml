@@ -1,0 +1,60 @@
+@model Movie
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="row mb-4">
+    <div class="col-md-3">
+        <img src="@Model.PosterUrl" class="img-fluid rounded" style="max-height: 400px; object-fit: cover;" />
+    </div>
+    <div class="col-md-9">
+        <h1 class="text-warning">@Model.Title</h1>
+        <p class="text-muted">@Model.Genre · @Model.ReleaseYear · @Model.Duration min</p>
+        <p>⭐ @Model.Rating / 10</p>
+        <p>@Model.Description</p>
+        @if (User.IsInRole("Admin"))
+        {
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-warning btn-sm">Edit</a>
+        }
+        <a asp-action="Index" class="btn btn-outline-light btn-sm">Back</a>
+    </div>
+</div>
+
+<hr />
+
+<h3 class="text-warning mb-3">Reviews (@Model.Reviews.Count)</h3>
+
+@foreach (var review in Model.Reviews)
+{
+    <div class="card bg-dark border-secondary mb-2">
+        <div class="card-body text-white">
+            <p class="mb-1"><strong>@review.UserName</strong> – ⭐ @review.Rating / 10</p>
+            <p class="mb-0">@review.Content</p>
+        </div>
+    </div>
+}
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <hr />
+    <h4 class="text-warning">Leave a Review</h4>
+    <form asp-action="AddReview" method="post">
+        <input type="hidden" name="movieId" value="@Model.Id" />
+        <div class="mb-3">
+            <label class="form-label">Rating (1-10)</label>
+            <input type="number" name="rating" min="1" max="10" class="form-control bg-dark text-white border-secondary" required />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Review</label>
+            <textarea name="content" rows="3" class="form-control bg-dark text-white border-secondary" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-warning">Submit Review</button>
+    </form>
+}
+else
+{
+    <p class="text-muted mt-3">Du måste vara inloggad för att lämna en review.</p>
+}
