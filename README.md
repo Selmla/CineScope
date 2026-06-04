@@ -2,7 +2,7 @@
 
 ## Project overview
 
-CineScope is a school project built with ASP.NET Core MVC and Entity Framework Core. It is a movie catalog app where users can view movies, see details and reviews, and authenticated users can leave reviews. Admin users can manage movies with create, edit, and delete operations.
+CineScope is a school project built with ASP.NET Core MVC and Entity Framework Core, and Bootstrap. It is a movie catalog app where users can view movies, see details and reviews, and authenticated users can leave reviews. Admin users can manage movies with create, edit, and delete operations.
 
 ## What I implemented
 
